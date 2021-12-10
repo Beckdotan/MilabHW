@@ -11,15 +11,24 @@ app.get('/',(req,res) => {
 
 /////////////////////////////////////////////////////
 
-app.get('/tasks',(req,res) => {
-	data = fs.readFileSync(__dirname + '/picture.txt', 'utf8');
-	console.log(data);
-  	//res.send(data);
-  	var readStream	= fs.createReadStream(__dirname + '/picture.txt');
-  	var writeStream = res.send(data)
-  	
-  	//var writeStream = fs.createWriteStream(__dirname + '/picture.txt');
-  	readStream.pipe(writeStream);
+app.get('/DontBeScared',(req,res) => {
+	
+	let name = req.query.name || "<unknown>"
+
+	if (name == "<unknown>"){
+		res.send("You Are Too Scread To Give Me Your Name HA? - lets try again, add to line ?name=<YOUR NAME>");
+
+	}else{
+
+		var data = fs.readFileSync(__dirname + '/start.txt');
+		console.log(data);
+  		var readStream	= fs.createReadStream(__dirname + '/start.txt');
+  		var writeStream = res.send(name + ' ' + data)
+  		readStream.pipe(writeStream);
+	}
+
+
+	
 
 
 });
