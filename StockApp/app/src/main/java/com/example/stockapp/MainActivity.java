@@ -32,10 +32,13 @@ public class MainActivity extends AppCompatActivity {
         stockPriceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 stockName = (String) userText.getText().toString();
-                //log.i("Main Activity Got Stock Name", stockName);
+                /*
+                log.i("Main Activity Got Stock Name", stockName);
                 resultTextView.setText(stockName);
-                fetchStockPrice(view);
+                */
+              fetchStockPrice(v);
             }
         });
 
@@ -43,12 +46,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void fetchStockPrice(final View view) {
-        final StockFetcher fetcher = new StockFetcher(view.getContext());
+        final StockPriceFetcher fetcher = new StockPriceFetcher(view.getContext());
+
+        //Loading Box
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Fetching Stock...");
         progressDialog.show();
 
-        fetcher.dispatchRequest(new StockFetcher.StockResponseListener() {
+
+        fetcher.dispatchRequest(new StockPriceFetcher.StockPriceResponseListener() {
             @Override
             public void onResponse(StockFetcher.StockResponse response) {
                 progressDialog.hide();
@@ -57,7 +63,5 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(view.getContext(), "Error while fetching Stock", Toast.LENGTH_LONG);
                     return;
                 }
-                //didnt changed it yet.
-                ((TextView)MainActivity.this.findViewById(R.id.location)).setText(response.location);
-                ((TextView)MainActivity.this.findViewById(R.id.temprature)).setText(String.valueOf(response.temp));
+                resultTextView.setText(response["price"]);
 }

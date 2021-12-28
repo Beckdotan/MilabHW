@@ -26,8 +26,8 @@ function fetchPriceForStock(stock, cb){
 	      console.log(`The Price is ${Price}`);
 
 	      return cb(null, {
-	      	symbol: symbol,
-	      	price = Price
+	      	symbol: stock,
+	      	price: Price
 	      });
 
 	    }
