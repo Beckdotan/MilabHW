@@ -2,8 +2,37 @@ const express = require('express');
 let app = express();
 const request = require('request');
 const PORT = 8080;
-
+const DEFAULT_STOCK = 'IBM';
 APIKEY = 'BYHKP7FYWBWRVJN3';
+
+
+function fetchPriceForStock(stock, cb){
+
+	let url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stock}&apikey=${APIKEY}`
+
+	request.get({
+    url: url,
+    json: true,
+    headers: {'User-Agent': 'request'}
+  	}, (err, res, data) => {
+	    if (err) {
+	      console.log('Error:', err);
+	    } else if (res.statusCode !== 200) {
+	      console.log('Status:', res.statusCode);
+	    } else {
+	      // data is successfully parsed as a JSON object:
+	      console.log(data);
+	      Price = data['Global Quote']['05. price']
+	      console.log(`The Price is ${Price}`);
+
+	      return cb(null, {
+	      	symbol: symbol,
+	      	price = Price
+	      });
+
+	    }
+	});
+}
 
 
 
@@ -12,31 +41,17 @@ app.get('/stock', (req, res, next) => {
 	var text = '<html><body>hey there<br>it was a good lecture</body><html>'
 	res.send(text);
 	*/
-
-
-
- 	let stockSymbol = req.params.stock_name;
-	let url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${APIKEY}`
-
-
-	request(url, function (err, response, body) {
-        if(err){
-            console.log('error:', error);
-            return res.error(err);
-          } else {
-            let stockData = JSON.parse(body)
-			
-			//Testings
-			const stockPrice = parseFloat(body['Global Quote']['05. price']);
-		    let message = `The price of ${stockName} is ${stockPrice}`
-            console.log(message);
-			
-            //return res.json(stockData);
-          }
-    });
- 
+ 	let stockSymbol = req.query.symbol || DEFAULT_STOCK;
+ 	console.log(stockSymbol);
+ 	
+ 	
+ 	fetchPriceForStock(stockSymbol, (err, price) =>{
+ 		if (err) return res.status(500).json({err: err.message});
+ 		return res.json(price);
+ 	});
 
 });
+ 
 
 
 

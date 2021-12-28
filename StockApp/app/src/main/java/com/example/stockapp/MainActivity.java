@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         //textView = (textView) findViewById(R.id.StockNameInput);
         userText = (EditText) findViewById(R.id.StockNameText);
         stockPriceButton = (Button) findViewById(R.id.getPriceButton);
-        resultTextView = (TextView) findViewById(R.id.resultTextView);
+        resultTextView = (TextView) findViewById(R.id.responsTextView);
 
 
         stockPriceButton.setOnClickListener(new View.OnClickListener() {
