@@ -28,15 +28,13 @@ public class StockPriceFetcher {
 
         public boolean isError;
         public String symbol;
-        public double price;
+        public String price;
 
         public PriceResponse(boolean isError, String symbol,  String price) {
             this.isError = isError;
             this.symbol = symbol;
-            this.price = Integer.parseInt(price);
+            this.price = price;
         }
-
-
     }
 
     public interface StockPriceResponseListener {
@@ -46,16 +44,19 @@ public class StockPriceFetcher {
 
 
     private PriceResponse createErrorResponse() {
-        return new PriceResponse(true, null, 0);
+        return new PriceResponse(true, null, "0");
     }
 
     public void dispatchRequest(final StockPriceResponseListener listener) {
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, REQUEST_URL, null,
+        Log.i("In fetcher", "In fetcher");
+        //JSONObject response = new JSONObject();
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, REQUEST_URL + "?", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
+                        Log.i("In fetcher", "On Response");
                         try {
+                            Log.i("In fetcher", "In Try");
                             PriceResponse res = new PriceResponse(false,
                                     response.getJSONObject("Global Quote").getString("01. symbol"),
                                     response.getJSONObject("Global Quote").getString("05. price"));
@@ -68,6 +69,7 @@ public class StockPriceFetcher {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse (VolleyError error) {
+                Log.i("In fetcher", "On Error Response");
                 listener.onResponse(createErrorResponse());
             }
         });

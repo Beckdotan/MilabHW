@@ -2,12 +2,15 @@ package com.example.stockapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     Button stockPriceButton;
@@ -15,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
     EditText userText;
     String stockName;
     TextView resultTextView;
-
-
 
 
     @Override
@@ -30,19 +31,22 @@ public class MainActivity extends AppCompatActivity {
 
 
         stockPriceButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("LongLogTag")
             @Override
             public void onClick(View v) {
 
                 stockName = (String) userText.getText().toString();
+                Log.i("Main Activity Got Stock Name", stockName);
                 /*
                 log.i("Main Activity Got Stock Name", stockName);
                 resultTextView.setText(stockName);
                 */
-              fetchStockPrice(v);
+                fetchStockPrice(v);
             }
         });
 
     }
+
 
 
     public void fetchStockPrice(final View view) {
@@ -53,15 +57,19 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setMessage("Fetching Stock...");
         progressDialog.show();
 
-
+        Log.i("Main - fetcher ", stockName);
         fetcher.dispatchRequest(new StockPriceFetcher.StockPriceResponseListener() {
             @Override
-            public void onResponse(StockFetcher.StockResponse response) {
+            public void onResponse(StockPriceFetcher.PriceResponse response) {
                 progressDialog.hide();
 
                 if (response.isError) {
                     Toast.makeText(view.getContext(), "Error while fetching Stock", Toast.LENGTH_LONG);
                     return;
                 }
-                resultTextView.setText(response["price"]);
+                resultTextView.setText(response.price);
+
+            }
+        });
+    }
 }
