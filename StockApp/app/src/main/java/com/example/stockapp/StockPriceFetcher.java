@@ -16,7 +16,7 @@ import org.json.JSONObject;
 public class StockPriceFetcher {
 
     private RequestQueue _queue;
-    private final static String REQUEST_URL = "http://localhost:8080/stock";
+    private final static String REQUEST_URL = "http://127.0.0.1:8080/stock?symbol=AAPL";
 
     public StockPriceFetcher(Context context) {
         _queue = Volley.newRequestQueue(context);
@@ -50,12 +50,13 @@ public class StockPriceFetcher {
     public void dispatchRequest(final StockPriceResponseListener listener) {
         Log.i("In fetcher", "In fetcher");
         //JSONObject response = new JSONObject();
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, REQUEST_URL + "?", null,
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, REQUEST_URL  , null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i("In fetcher", "On Response");
                         try {
+                            //never gets here - doesnt connect to server. 
                             Log.i("In fetcher", "In Try");
                             PriceResponse res = new PriceResponse(false,
                                     response.getJSONObject("Global Quote").getString("01. symbol"),

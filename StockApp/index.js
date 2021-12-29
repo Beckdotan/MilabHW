@@ -41,6 +41,7 @@ app.get('/stock', (req, res, next) => {
 	var text = '<html><body>hey there<br>it was a good lecture</body><html>'
 	res.send(text);
 	*/
+	console.log("inside the server");
  	let stockSymbol = req.query.symbol || DEFAULT_STOCK;
  	console.log(stockSymbol);
  	
