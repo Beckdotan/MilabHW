@@ -44,6 +44,7 @@ public class StockPriceFetcher {
 
 
     private PriceResponse createErrorResponse() {
+        Log.i("In fetcher", "In Creat arror response");
         return new PriceResponse(true, null, "0");
     }
 
@@ -54,9 +55,9 @@ public class StockPriceFetcher {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("In fetcher", "On Response");
+//                        Log.i("In fetcher", "On Response");
                         try {
-                            //never gets here - doesnt connect to server. 
+                            //never gets here - doesnt connect to server.
                             Log.i("In fetcher", "In Try");
                             PriceResponse res = new PriceResponse(false,
                                     response.getJSONObject("Global Quote").getString("01. symbol"),
@@ -64,13 +65,17 @@ public class StockPriceFetcher {
                             listener.onResponse(res);
                         }
                         catch (JSONException e) {
+                            Log.i("catch", "in jason exception");
+                            String error = "The error is : "+ e;
+                            Log.i("exception" , error);
                             listener.onResponse(createErrorResponse());
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse (VolleyError error) {
-                Log.i("In fetcher", "On Error Response");
+                Log.i("In fetcher", "In Error Response");
+
                 listener.onResponse(createErrorResponse());
             }
         });
