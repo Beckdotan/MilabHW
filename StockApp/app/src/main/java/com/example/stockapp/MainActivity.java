@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     Button stockPriceButton;
     TextView textView;
     EditText userText;
-    String stockName;
+    static String stockName;
     TextView resultTextView;
 
 
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.hide();
 
                 if (response.isError) {
+                    Log.i("main", "in response.is_err");
                     Toast.makeText(view.getContext(), "Error while fetching Stock", Toast.LENGTH_LONG);
                     return;
                 }
