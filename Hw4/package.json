@@ -1,0 +1,16 @@
+{
+  "name": "pipe",
+  "version": "1.0.0",
+  "description": "Hw4 Milab pipe",
+  "main": "mainPipe.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pipe": "^1.1.0",
+    "zlib": "^1.0.5"
+  }
+}
